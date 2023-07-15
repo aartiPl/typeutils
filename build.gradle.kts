@@ -3,13 +3,14 @@ val kotlinVersion: String = "1.8.22"
 plugins {
     kotlin("jvm") version "1.8.22"
     id("com.adarshr.test-logger") version "3.2.0"
+    `java-library`
     `maven-publish`
     signing
     idea
 }
 
 group = "net.igsoft"
-version = "0.5-SNAPSHOT"
+version = "0.5.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -92,8 +93,6 @@ dependencies {
 
     implementation("org.apache.commons:commons-lang3:3.12.0")
 
-    implementation("org.slf4j:slf4j-nop:2.0.5")
-
     testImplementation("org.junit.platform:junit-platform-suite-engine:1.9.0")
     testImplementation("org.junit.platform:junit-platform-suite-api:1.9.0")
     testImplementation("org.junit.platform:junit-platform-suite-commons:1.9.0")
@@ -101,6 +100,4 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
     testImplementation("io.mockk:mockk:1.13.2")
-
-    testImplementation(kotlin("script-runtime"))
 }
