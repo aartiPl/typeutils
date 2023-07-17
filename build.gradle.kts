@@ -3,7 +3,6 @@ val kotlinVersion: String = "1.8.22"
 plugins {
     kotlin("jvm") version "1.8.22"
     id("com.adarshr.test-logger") version "3.2.0"
-    `java-library`
     `maven-publish`
     signing
     idea
@@ -45,9 +44,9 @@ val developersSpec = Action<MavenPomDeveloperSpec> {
 }
 
 val scmSpec = Action<MavenPomScm> {
-    connection.set("scm:git:git://https://github.com/kscripting/shell.git")
-    developerConnection.set("scm:git:ssh:https://github.com/kscripting/shell.git")
-    url.set("https://github.com/kscripting/shell")
+    connection.set("scm:git:git://https://github.com/aartiPl/typeutils.git")
+    developerConnection.set("scm:git:ssh:https://github.com/aartiPl/typeutils.git")
+    url.set("https://github.com/aartiPl/typeutils/tree/master")
 }
 
 publishing {
@@ -70,8 +69,8 @@ publishing {
 
     repositories {
         maven {
-            val releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
             url = uri(if (project.version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
             credentials {
