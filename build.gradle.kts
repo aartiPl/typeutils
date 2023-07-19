@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "net.igsoft"
-version = "0.5.0-SNAPSHOT"
+version = "0.5.0"
 
 repositories {
     mavenCentral()
@@ -97,6 +97,6 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-suite-commons:1.9.0")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.26.1")
     testImplementation("io.mockk:mockk:1.13.2")
 }

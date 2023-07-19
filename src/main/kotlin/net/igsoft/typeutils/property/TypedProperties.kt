@@ -3,10 +3,10 @@ package net.igsoft.typeutils.property
 import net.igsoft.typeutils.marker.Marker
 import net.igsoft.typeutils.marker.TypedMarker
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "unused")
 class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedProperties {
 
-    override fun <T> set(marker: TypedMarker<T>, value: T?) {
+    override operator fun <T> set(marker: TypedMarker<T>, value: T?) {
         map[marker] = value
     }
 
@@ -60,13 +60,13 @@ class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedP
     override val size: Int
         get() = map.size
 
-    override val entries: Set<Map.Entry<Marker, Any?>>
+    override val entries: MutableSet<MutableMap.MutableEntry<Marker, Any?>>
         get() = map.entries
 
-    override val keys: Set<Marker>
+    override val keys: MutableSet<Marker>
         get() = map.keys
 
-    override val values: Collection<Any?>
+    override val values: MutableCollection<Any?>
         get() = map.values
 
     override fun isEmpty(): Boolean = map.isEmpty()
@@ -77,6 +77,15 @@ class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedP
 
     override fun iterator(): Iterator<Map.Entry<Marker, Any?>> = map.iterator()
 
+    fun clear() {
+        map.clear()
+    }
+
+    fun <T> put(key: TypedMarker<T>, value: T?): Any? = map.put(key, value)
+
+    fun putAll(from: Map<out Marker, Any?>) = map.putAll(from)
+
+    fun remove(key: Marker): Any? = map.remove(key)
 
     private fun isPropertyKeyMissing(any: Any?, marker: Marker) =
         any == null && !map.containsKey(marker)

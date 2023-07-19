@@ -9,5 +9,4 @@ class Context : MutableTypedProperties by TypedProperties(mutableMapOf()) {
     fun invokeNextProcessor() {
         pipeline?.process(this)
     }
-
 }
