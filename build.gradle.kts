@@ -15,8 +15,13 @@ repositories {
     mavenCentral()
 }
 
-kotlin {
-    jvmToolchain(11)
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+
+    withJavadocJar()
+    withSourcesJar()
 }
 
 testlogger {
