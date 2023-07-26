@@ -5,7 +5,7 @@ import net.igsoft.typeutils.marker.TypedMarker
 import net.igsoft.typeutils.property.ImmutableTypedProperties
 import java.util.concurrent.ConcurrentHashMap
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "unused")
 object GlobalContext : ImmutableTypedProperties {
     private val context: MutableMap<Marker, Any?> = ConcurrentHashMap()
 
@@ -15,6 +15,17 @@ object GlobalContext : ImmutableTypedProperties {
         }
 
         context[key] = value
+    }
+
+    fun <T> multiRegister(key: TypedMarker<T>, value: T) {
+        context[key] = value
+    }
+
+    fun <T> getOrError(
+        marker: TypedMarker<T>,
+        message: String = "Key '${marker} doesn't exist in the GlobalContext'"
+    ): T {
+        return getOrElse(marker) { error(message) }
     }
 
     override operator fun <T> get(marker: TypedMarker<T>) = context[marker] as T?
