@@ -2,15 +2,15 @@ package net.igsoft.typeutils.pipeline
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import net.igsoft.typeutils.marker.TypedMarker
+import net.igsoft.typeutils.marker.DefaultTypedMarker
 import org.junit.jupiter.api.Test
 
 class PipelineTest {
-    private val firstname by TypedMarker.create<String>()
-    private val lastname by TypedMarker.create<String>()
-    private val age by TypedMarker.create<Int>()
-    private val shoeSize by TypedMarker.create<Int?>()
-    private val helloMessage by TypedMarker.create<String>()
+    private val firstname by DefaultTypedMarker.create<String>()
+    private val lastname by DefaultTypedMarker.create<String>()
+    private val age by DefaultTypedMarker.create<Int>()
+    private val shoeSize by DefaultTypedMarker.create<Int?>()
+    private val helloMessage by DefaultTypedMarker.create<String>()
 
     private val p1: Processor = object: Processor {
         override fun process(context: Context) {

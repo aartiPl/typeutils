@@ -2,8 +2,10 @@ package net.igsoft.typeutils.marker
 
 import net.igsoft.typeutils.generator.IntGenerator
 
+@Suppress("unused")
 class AutoTypedMarker<T> internal constructor(override val clazz: Class<T>, override val id: Any) :
-    TypedMarker<T>(clazz, id) {
+    DefaultTypedMarker<T>(clazz, id) {
+
     companion object {
         private val intGenerator = IntGenerator()
 

@@ -15,9 +15,9 @@ class Pipeline(private val processors: List<Processor>) : Processor {
         }
 
         if (currentState.index < processors.size - 1) {
-            currentState.index = currentState.index + 1
+            currentState.index += 1
             processors[currentState.index].process(context)
-            currentState.index = currentState.index - 1
+            currentState.index -= 1
         } else {
             context.pipeline = currentState.previousPipeline
             stateMap.remove(context)

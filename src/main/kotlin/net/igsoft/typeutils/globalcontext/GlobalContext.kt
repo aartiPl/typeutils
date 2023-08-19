@@ -17,7 +17,7 @@ object GlobalContext : ImmutableTypedProperties {
         context[key] = value
     }
 
-    fun <T> multiRegister(key: TypedMarker<T>, value: T) {
+    fun <T> registerOrReplace(key: TypedMarker<T>, value: T) {
         context[key] = value
     }
 

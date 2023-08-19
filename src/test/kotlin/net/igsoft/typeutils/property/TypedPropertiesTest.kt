@@ -2,16 +2,16 @@ package net.igsoft.typeutils.property
 
 import assertk.assertThat
 import assertk.assertions.*
-import net.igsoft.typeutils.marker.TypedMarker
+import net.igsoft.typeutils.marker.DefaultTypedMarker
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class TypedPropertiesTest {
     private lateinit var properties: TypedProperties
-    private val firstname by TypedMarker.create<String>()
-    private val surname by TypedMarker.create<String>()
-    private val age by TypedMarker.create<Int>()
-    private val shoeSize by TypedMarker.create<Int>()
+    private val firstname by DefaultTypedMarker.create<String>()
+    private val surname by DefaultTypedMarker.create<String>()
+    private val age by DefaultTypedMarker.create<Int>()
+    private val shoeSize by DefaultTypedMarker.create<Int>()
 
     @BeforeEach
     fun setUp() {
