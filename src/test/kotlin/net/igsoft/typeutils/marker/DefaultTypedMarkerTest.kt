@@ -17,7 +17,7 @@ class DefaultTypedMarkerTest {
 
     @Test
     fun `Assert that TypedMarker can be created manually`() {
-        assertThat(DefaultTypedMarker.create(String::class.java, "s1")).apply {
+        assertThat(DefaultTypedMarker(String::class.java, "s1")).apply {
             prop(DefaultTypedMarker<String>::clazz).isEqualTo(String::class.java)
             prop(DefaultTypedMarker<String>::id).isEqualTo("s1")
         }
