@@ -4,7 +4,7 @@ import kotlin.properties.ReadOnlyProperty
 
 @Suppress("unused")
 open class DefaultTypedMarker<T>(override val id: Any, override val clazz: Class<T>) : TypedMarker<T>,
-    AbstractMarker(id, clazz) {
+    DefaultMarker(id, clazz) {
 
     //Copying constructor (de facto alias of marker)
     constructor(marker: TypedMarker<T>) : this(marker.id, marker.clazz)

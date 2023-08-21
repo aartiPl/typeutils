@@ -10,10 +10,8 @@ class AutoTypedMarker<T> internal constructor(override val id: Any, override val
         private val intGenerator = IntGenerator()
 
         @JvmStatic
-        fun <T> create(clazz: Class<T>) =
-            AutoTypedMarker(intGenerator.next(), clazz)
+        fun <T> create(clazz: Class<T>) = AutoTypedMarker(intGenerator.next(), clazz)
 
-        inline fun <reified T> create() =
-            create(T::class.java)
+        inline fun <reified T> create() = create(T::class.java)
     }
 }

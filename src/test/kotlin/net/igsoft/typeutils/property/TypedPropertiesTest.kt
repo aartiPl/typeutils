@@ -1,13 +1,16 @@
 package net.igsoft.typeutils.property
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.*
 import net.igsoft.typeutils.marker.DefaultTypedMarker
+import net.igsoft.typeutils.marker.Marker
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class TypedPropertiesTest {
     private lateinit var properties: TypedProperties
+
     private val firstname by DefaultTypedMarker.create<String>()
     private val surname by DefaultTypedMarker.create<String>()
     private val age by DefaultTypedMarker.create<Int>()
@@ -33,6 +36,36 @@ class TypedPropertiesTest {
             prop(TypedProperties::values).isEmpty()
             prop(TypedProperties::entries).isEmpty()
         }
+    }
+
+    @Test
+    fun `Assert that getting properties is possible`() {
+        assertThat(properties[firstname]).isEqualTo("Gregory")
+        assertThat(properties[surname]).isEqualTo("Iksiński")
+        assertThat(properties[shoeSize]).isNull()
+
+        val untypedFirstname: Marker = firstname
+        val untypedSurname: Marker = surname
+        val untypedShoeSize: Marker = shoeSize
+
+        assertThat(properties[untypedFirstname]).isNotNull().isInstanceOf<String>().isEqualTo("Gregory")
+        assertThat(properties[untypedSurname]).isNotNull().isInstanceOf<String>().isEqualTo("Iksiński")
+        assertThat(properties[untypedShoeSize]).isNull()
+    }
+
+    @Test
+    fun `Assert that getting not null properties is possible`() {
+        assertThat(properties.getValue(firstname)).isEqualTo("Gregory")
+        assertThat(properties.getValue(surname)).isEqualTo("Iksiński")
+        assertFailure { properties.getValue(shoeSize) }.hasMessage("Marker DefaultTypedMarker(id=shoeSize, clazz=java.lang.Integer) is missing in the properties")
+
+        val untypedFirstname: Marker = firstname
+        val untypedSurname: Marker = surname
+        val untypedShoeSize: Marker = shoeSize
+
+        assertThat(properties.getValue(untypedFirstname)).isNotNull().isInstanceOf<String>().isEqualTo("Gregory")
+        assertThat(properties.getValue(untypedSurname)).isNotNull().isInstanceOf<String>().isEqualTo("Iksiński")
+        assertFailure { properties.getValue(untypedShoeSize) }.hasMessage("Marker DefaultTypedMarker(id=shoeSize, clazz=java.lang.Integer) is missing in the properties")
     }
 
     @Test

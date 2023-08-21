@@ -10,11 +10,17 @@ class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedP
         map[marker] = value
     }
 
-    override fun get(key: Marker): Any? =
-        map[key]
+    override fun get(key: Marker): Any? = map[key]
 
-    override fun <T> get(marker: TypedMarker<T>): T? =
-        map[marker] as? T
+    override fun <T> get(marker: TypedMarker<T>): T? = map[marker] as? T
+
+    override fun getValue(marker: Marker): Any?  {
+        if (isPropertyKeyMissing(null, marker)) {
+            throw NoSuchElementException("Marker $marker is missing in the properties")
+        }
+
+        return map.getValue(marker)
+    }
 
     override fun <T> getValue(marker: TypedMarker<T>): T {
         val value = map[marker]
@@ -57,17 +63,13 @@ class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedP
         return value as T
     }
 
-    override val size: Int
-        get() = map.size
+    override val size: Int get() = map.size
 
-    override val entries: MutableSet<MutableMap.MutableEntry<Marker, Any?>>
-        get() = map.entries
+    override val entries: MutableSet<MutableMap.MutableEntry<Marker, Any?>> get() = map.entries
 
-    override val keys: MutableSet<Marker>
-        get() = map.keys
+    override val keys: MutableSet<Marker> get() = map.keys
 
-    override val values: MutableCollection<Any?>
-        get() = map.values
+    override val values: MutableCollection<Any?> get() = map.values
 
     override fun isEmpty(): Boolean = map.isEmpty()
 
@@ -87,6 +89,5 @@ class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedP
 
     fun remove(key: Marker): Any? = map.remove(key)
 
-    private fun isPropertyKeyMissing(any: Any?, marker: Marker) =
-        any == null && !map.containsKey(marker)
+    private fun isPropertyKeyMissing(any: Any?, marker: Marker) = any == null && !map.containsKey(marker)
 }
