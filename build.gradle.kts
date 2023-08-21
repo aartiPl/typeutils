@@ -103,5 +103,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.26.1")
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15.1")
     testImplementation("io.mockk:mockk:1.13.2")
 }
