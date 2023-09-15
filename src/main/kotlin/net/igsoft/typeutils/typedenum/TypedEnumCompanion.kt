@@ -20,8 +20,8 @@ abstract class TypedEnumCompanion<T> {
 
     fun findOrThrow(name: String): T = find(name) ?: error("Can not find enum value for: '$name'")
 
-    fun find(fn: (T?) -> Boolean): T? {
-        return resolveValue(registry.values.find { fn(resolveValue(it)) })
+    fun find(fn: (T) -> Boolean): T? {
+        return resolveValue(registry.values.find { fn(resolveValue(it)!!) })
     }
 
     protected fun findName(instance: T) =
@@ -32,6 +32,6 @@ abstract class TypedEnumCompanion<T> {
     private fun resolveValue(property: KProperty1.Getter<out TypedEnumCompanion<T>, Any?>?) = property?.call(this) as T?
 
     private fun isEnumMember(property: KProperty1<out TypedEnumCompanion<T>, *>, typeClazzName: String) =
-        property.isFinal && property.returnType.classifier.toString().substringAfterLast(".")
+        property.isFinal && !property.returnType.isMarkedNullable && property.returnType.classifier.toString().substringAfterLast(".")
             .substringAfterLast("$") == typeClazzName
 }

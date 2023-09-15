@@ -12,7 +12,7 @@ class GlobalContextTest {
     private val otherPerson by DefaultTypedMarker.create<Person>()
 
     @Test
-    fun `Assert that we can register and read objects on GlobalContext`() {
+    fun `Assert that we can register and read objects in GlobalContext`() {
         val personEntity = Person("Marcin", "Iksiński", 28)
         GlobalContext.register(person, personEntity)
 
@@ -20,7 +20,7 @@ class GlobalContextTest {
     }
 
     @Test
-    fun `Assert that we can re-register objects on GlobalContext`() {
+    fun `Assert that we can re-register objects in GlobalContext`() {
         val personEntity = Person("Marcin", "Iksiński", 28)
         val newPersonEntity = Person("Marcin", "Babiński", 52)
 
