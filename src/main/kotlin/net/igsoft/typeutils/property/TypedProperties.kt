@@ -12,18 +12,20 @@ class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedP
 
     override fun get(key: Marker): Any? = map[key]
 
-    override fun <T> get(marker: TypedMarker<T>): T? = map[marker] as? T
+    override fun <T> get(marker: TypedMarker<T>): T? = get(marker as Marker) as? T
 
-    override fun getValue(marker: Marker): Any?  {
-        if (isPropertyKeyMissing(null, marker)) {
+    override fun getValue(marker: Marker): Any  {
+        val value = get(marker)
+
+        if (isPropertyKeyMissing(value, marker)) {
             throw NoSuchElementException("Marker $marker is missing in the properties")
         }
 
-        return map.getValue(marker)
+        return value!!
     }
 
     override fun <T> getValue(marker: TypedMarker<T>): T {
-        val value = map[marker]
+        val value = get(marker)
 
         if (isPropertyKeyMissing(value, marker)) {
             throw NoSuchElementException("Marker $marker is missing in the properties")
@@ -33,7 +35,7 @@ class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedP
     }
 
     override fun <T> getOrDefault(marker: TypedMarker<T>, defaultValue: T): T {
-        val value = map[marker]
+        val value = get(marker)
 
         if (isPropertyKeyMissing(value, marker)) {
             return defaultValue
@@ -43,7 +45,7 @@ class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedP
     }
 
     override fun <T> getOrElse(marker: TypedMarker<T>, calculateValue: () -> T): T {
-        val value = map[marker]
+        val value = get(marker)
 
         if (isPropertyKeyMissing(value, marker)) {
             return calculateValue()
@@ -53,11 +55,11 @@ class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedP
     }
 
     override fun <T> getOrPut(marker: TypedMarker<T>, calculateValue: () -> T): T {
-        var value = map[marker]
+        var value = get(marker)
 
         if (isPropertyKeyMissing(value, marker)) {
             value = calculateValue()
-            map[marker] = value
+            set(marker, value)
         }
 
         return value as T
