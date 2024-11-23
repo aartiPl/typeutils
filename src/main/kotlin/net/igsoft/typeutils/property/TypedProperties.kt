@@ -4,66 +4,69 @@ import net.igsoft.typeutils.marker.Marker
 import net.igsoft.typeutils.marker.TypedMarker
 
 @Suppress("UNCHECKED_CAST", "unused")
-class TypedProperties(private val map: MutableMap<Marker, Any?> = mutableMapOf(), configBlock: TypedProperties.() -> Unit = {}) : MutableTypedProperties {
+class TypedProperties(
+    private val map: MutableMap<Marker, Any?> = mutableMapOf(),
+    configBlock: TypedProperties.() -> Unit = {}
+) : MutableTypedProperties {
 
     init {
         configBlock()
     }
 
-    override operator fun <T> set(marker: TypedMarker<T>, value: T?) {
-        map[marker] = value
+    override operator fun <T> set(key: TypedMarker<T>, value: T) {
+        map[key] = value
     }
 
     override fun get(key: Marker): Any? = map[key]
 
-    override fun <T> get(marker: TypedMarker<T>): T? = get(marker as Marker) as? T
+    override fun <T> get(key: TypedMarker<T>): T? = get(key as Marker) as? T
 
-    override fun getValue(marker: Marker): Any  {
-        val value = get(marker)
+    override fun getValue(key: Marker): Any {
+        val value = get(key)
 
-        if (isPropertyKeyMissing(value, marker)) {
-            throw NoSuchElementException("Marker $marker is missing in the properties")
+        if (isPropertyKeyMissing(value, key)) {
+            throw NoSuchElementException("Marker $key is missing in the properties")
         }
 
         return value!!
     }
 
-    override fun <T> getValue(marker: TypedMarker<T>): T {
-        val value = get(marker)
+    override fun <T> getValue(key: TypedMarker<T>): T {
+        val value = get(key)
 
-        if (isPropertyKeyMissing(value, marker)) {
-            throw NoSuchElementException("Marker $marker is missing in the properties")
+        if (isPropertyKeyMissing(value, key)) {
+            throw NoSuchElementException("Marker $key is missing in the properties")
         }
 
         return value as T
     }
 
-    override fun <T> getOrDefault(marker: TypedMarker<T>, defaultValue: T): T {
-        val value = get(marker)
+    override fun <T> getOrDefault(key: TypedMarker<T>, defaultValue: T): T {
+        val value = get(key)
 
-        if (isPropertyKeyMissing(value, marker)) {
+        if (isPropertyKeyMissing(value, key)) {
             return defaultValue
         }
 
         return value as T
     }
 
-    override fun <T> getOrElse(marker: TypedMarker<T>, calculateValue: () -> T): T {
-        val value = get(marker)
+    override fun <T> getOrElse(key: TypedMarker<T>, calculateValue: () -> T): T {
+        val value = get(key)
 
-        if (isPropertyKeyMissing(value, marker)) {
+        if (isPropertyKeyMissing(value, key)) {
             return calculateValue()
         }
 
         return value as T
     }
 
-    override fun <T> getOrPut(marker: TypedMarker<T>, calculateValue: () -> T): T {
-        var value = get(marker)
+    override fun <T> getOrPut(key: TypedMarker<T>, calculateValue: () -> T): T {
+        var value = get(key)
 
-        if (isPropertyKeyMissing(value, marker)) {
+        if (isPropertyKeyMissing(value, key)) {
             value = calculateValue()
-            set(marker, value)
+            set(key, value)
         }
 
         return value as T
@@ -83,17 +86,15 @@ class TypedProperties(private val map: MutableMap<Marker, Any?> = mutableMapOf()
 
     override fun containsKey(key: Marker): Boolean = map.containsKey(key)
 
-    override fun iterator(): Iterator<Map.Entry<Marker, Any?>> = map.iterator()
+    override fun clear(): Unit = map.clear()
 
-    fun clear() {
-        map.clear()
-    }
+    override fun put(key: Marker, value: Any?): Any? = map.put(key, value)
 
-    fun <T> put(key: TypedMarker<T>, value: T?): Any? = map.put(key, value)
+    override fun <T> put(key: TypedMarker<T>, value: T): T = map.put(key, value) as T
 
-    fun putAll(from: Map<out Marker, Any?>) = map.putAll(from)
+    override fun putAll(from: Map<out Marker, Any?>) = map.putAll(from)
 
-    fun remove(key: Marker): Any? = map.remove(key)
+    override fun remove(key: Marker): Any? = map.remove(key)
 
     private fun isPropertyKeyMissing(any: Any?, marker: Marker) = any == null && !map.containsKey(marker)
 }

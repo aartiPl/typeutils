@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class TypedPropertiesTest {
-    private lateinit var properties: TypedProperties
+    private lateinit var properties: MutableTypedProperties
 
     private val name by DefaultTypedMarker.create<String>()
     private val surname by DefaultTypedMarker.create<String>()
@@ -86,9 +86,9 @@ class TypedPropertiesTest {
         properties[shoeSize] = 32
 
         assertThat(properties).apply {
-            prop(TypedProperties::size).isEqualTo(4)
-            prop(TypedProperties::keys).isEqualTo(setOf(this@TypedPropertiesTest.name, surname, age, shoeSize))
-            prop(TypedProperties::values).containsExactlyInAnyOrder(NAME, SURNAME, 28, 32)
+            prop(MutableTypedProperties::size).isEqualTo(4)
+            prop(MutableTypedProperties::keys).isEqualTo(setOf(this@TypedPropertiesTest.name, surname, age, shoeSize))
+            prop(MutableTypedProperties::values).containsExactlyInAnyOrder(NAME, SURNAME, 28, 32)
         }
     }
 
@@ -97,9 +97,23 @@ class TypedPropertiesTest {
         properties.remove(age)
 
         assertThat(properties).apply {
-            prop(TypedProperties::size).isEqualTo(2)
-            prop(TypedProperties::keys).isEqualTo(setOf(this@TypedPropertiesTest.name, surname))
-            prop(TypedProperties::values).containsExactlyInAnyOrder(NAME, SURNAME)
+            prop(MutableTypedProperties::size).isEqualTo(2)
+            prop(MutableTypedProperties::keys).isEqualTo(setOf(this@TypedPropertiesTest.name, surname))
+            prop(MutableTypedProperties::values).containsExactlyInAnyOrder(NAME, SURNAME)
+        }
+    }
+
+    @Test
+    fun `Assert that clearing map leaves it empty`() {
+        properties.clear()
+
+        assertThat(properties).isEmpty()
+    }
+
+    @Test
+    fun `Assert iteration over the map is possible`() {
+        for (item in properties) {
+            assertThat(item.key).isIn(name, surname, age, shoeSize)
         }
     }
 
