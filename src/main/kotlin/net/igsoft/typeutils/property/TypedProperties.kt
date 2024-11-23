@@ -4,7 +4,11 @@ import net.igsoft.typeutils.marker.Marker
 import net.igsoft.typeutils.marker.TypedMarker
 
 @Suppress("UNCHECKED_CAST", "unused")
-class TypedProperties(private val map: MutableMap<Marker, Any?>) : MutableTypedProperties {
+class TypedProperties(private val map: MutableMap<Marker, Any?> = mutableMapOf(), configBlock: TypedProperties.() -> Unit = {}) : MutableTypedProperties {
+
+    init {
+        configBlock()
+    }
 
     override operator fun <T> set(marker: TypedMarker<T>, value: T?) {
         map[marker] = value
