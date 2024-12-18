@@ -88,13 +88,11 @@ class TypedProperties(
 
     override fun clear(): Unit = map.clear()
 
-    override fun put(key: Marker, value: Any?): Any? = map.put(key, value)
-
     override fun <T> put(key: TypedMarker<T>, value: T): T = map.put(key, value) as T
 
-    override fun putAll(from: Map<out Marker, Any?>) = map.putAll(from)
+    override fun putAll(from: ImmutableTypedProperties) = map.putAll(from)
 
-    override fun remove(key: Marker): Any? = map.remove(key)
+    override fun <T> remove(key: TypedMarker<T>): T? = map.remove(key) as T?
 
     private fun isPropertyKeyMissing(any: Any?, marker: Marker) = any == null && !map.containsKey(marker)
 }
