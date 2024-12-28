@@ -1,1 +1,5 @@
 * GlobalContext - fun <T> scopedRegister(fn: ...) (???)
+* Ability to name markers - useful for debugging
+* TypedProperties should take ImmutableTypedProperties?
+* Type safety tests with Programmatic Kotlin compilation
+* Cloning of TypedProperties and other structures?

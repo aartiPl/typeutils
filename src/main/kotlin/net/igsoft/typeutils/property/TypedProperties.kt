@@ -94,5 +94,7 @@ class TypedProperties(
 
     override fun <T> remove(key: TypedMarker<T>): T? = map.remove(key) as T?
 
+    override fun remove(key: Marker): Any? = map.remove(key)
+
     private fun isPropertyKeyMissing(any: Any?, marker: Marker) = any == null && !map.containsKey(marker)
 }
