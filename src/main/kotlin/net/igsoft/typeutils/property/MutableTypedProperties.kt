@@ -5,9 +5,14 @@ import net.igsoft.typeutils.marker.TypedMarker
 
 interface MutableTypedProperties : ImmutableTypedProperties {
     fun <T> put(key: TypedMarker<T>, value: T): T
+
     fun putAll(from: ImmutableTypedProperties)
 
     fun <T> getOrPut(key: TypedMarker<T>, calculateValue: () -> T): T
+
+    fun transfer(source: ImmutableTypedProperties, vararg keys: Marker)
+
+    fun transfer(source: ImmutableTypedProperties, keys: Collection<Marker>)
 
     fun <T> remove(key: TypedMarker<T>): T?
 

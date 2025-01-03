@@ -72,6 +72,16 @@ class TypedProperties(
         return value as T
     }
 
+    override fun transfer(source: ImmutableTypedProperties, vararg keys: Marker) {
+        transfer(source, keys.toList())
+    }
+
+    override fun transfer(source: ImmutableTypedProperties, keys: Collection<Marker>) {
+        for(key in keys) {
+            map[key] = source[key]
+        }
+    }
+
     override val size: Int get() = map.size
 
     override val entries: MutableSet<MutableMap.MutableEntry<Marker, Any?>> get() = map.entries
