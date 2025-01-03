@@ -106,5 +106,18 @@ class TypedProperties(
 
     override fun remove(key: Marker): Any? = map.remove(key)
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as TypedProperties
+
+        return map == other.map
+    }
+
+    override fun hashCode(): Int {
+        return map.hashCode()
+    }
+
     private fun isPropertyKeyMissing(any: Any?, marker: Marker) = any == null && !map.containsKey(marker)
 }

@@ -117,6 +117,24 @@ class TypedPropertiesTest {
         }
     }
 
+    @Test
+    fun `TypedProperties can be compared`() {
+        val properties1 = TypedProperties {
+            put(name, NAME)
+            put(surname, SURNAME)
+            put(shoeSize, 25)
+        }
+
+        val properties2 = TypedProperties {
+            put(name, NAME)
+            put(surname, SURNAME)
+            put(shoeSize, 25)
+        }
+
+        assertThat(properties1).isEqualTo(properties2)
+        assertThat(properties1 as ImmutableTypedProperties).isEqualTo(properties2 as MutableTypedProperties)
+    }
+
     companion object {
         private const val NAME = "Gregory"
         private const val SURNAME = "Iksiński"
