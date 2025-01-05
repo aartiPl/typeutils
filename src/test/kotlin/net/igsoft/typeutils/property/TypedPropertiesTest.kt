@@ -22,7 +22,7 @@ class TypedPropertiesTest {
 
         properties[name] = NAME
         properties[surname] = SURNAME
-        properties[age] = 28
+        properties[age] = AGE
     }
 
     @Test
@@ -135,8 +135,40 @@ class TypedPropertiesTest {
         assertThat(properties1 as ImmutableTypedProperties).isEqualTo(properties2 as MutableTypedProperties)
     }
 
+    @Test
+    fun `Assert that all properties can be transferred`() {
+        // Given
+        val newProperties = TypedProperties()
+
+        // When
+        newProperties.transfer(properties)
+
+        // Then
+        assertThat(newProperties).hasSize(3)
+        assertThat(newProperties[name]).isEqualTo(NAME)
+        assertThat(newProperties[surname]).isEqualTo(SURNAME)
+        assertThat(newProperties[age]).isEqualTo(AGE)
+    }
+
+    @Test
+    fun `Assert that some properties can be transferred`() {
+        // Given
+        val newProperties = TypedProperties()
+
+        // When
+        newProperties.transfer(properties, name, age)
+
+        // Then
+        assertThat(newProperties).hasSize(2)
+        assertThat(newProperties[name]).isEqualTo(NAME)
+        assertThat(newProperties[age]).isEqualTo(AGE)
+        assertThat(newProperties[surname]).isEqualTo(null)
+        assertThat(newProperties[shoeSize]).isEqualTo(null)
+    }
+
     companion object {
         private const val NAME = "Gregory"
         private const val SURNAME = "Iksiński"
+        private const val AGE = 28
     }
 }
