@@ -72,15 +72,15 @@ class TypedProperties(
         return value as T
     }
 
-    override fun transfer(source: ImmutableTypedProperties) {
-        transfer(source, source.keys)
+    override fun merge(source: ImmutableTypedProperties) {
+        merge(source, source.keys)
     }
 
-    override fun transfer(source: ImmutableTypedProperties, vararg keys: Marker) {
-        transfer(source, keys.toList())
+    override fun merge(source: ImmutableTypedProperties, vararg keys: Marker) {
+        merge(source, keys.toList())
     }
 
-    override fun transfer(source: ImmutableTypedProperties, keys: Collection<Marker>) {
+    override fun merge(source: ImmutableTypedProperties, keys: Collection<Marker>) {
         for(key in keys) {
             map[key] = source[key]
         }

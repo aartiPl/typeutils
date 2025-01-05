@@ -136,12 +136,12 @@ class TypedPropertiesTest {
     }
 
     @Test
-    fun `Assert that all properties can be transferred`() {
+    fun `Assert that all properties can be merged`() {
         // Given
         val newProperties = TypedProperties()
 
         // When
-        newProperties.transfer(properties)
+        newProperties.merge(properties)
 
         // Then
         assertThat(newProperties).hasSize(3)
@@ -151,12 +151,12 @@ class TypedPropertiesTest {
     }
 
     @Test
-    fun `Assert that some properties can be transferred`() {
+    fun `Assert that some properties can be merged`() {
         // Given
         val newProperties = TypedProperties()
 
         // When
-        newProperties.transfer(properties, name, age)
+        newProperties.merge(properties, name, age)
 
         // Then
         assertThat(newProperties).hasSize(2)
