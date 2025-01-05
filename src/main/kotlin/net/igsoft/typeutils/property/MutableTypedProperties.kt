@@ -10,14 +10,19 @@ interface MutableTypedProperties : ImmutableTypedProperties {
 
     fun <T> getOrPut(key: TypedMarker<T>, calculateValue: () -> T): T
 
+    // Transfer properties from source to current TypedProperties
+    fun transfer(source: ImmutableTypedProperties)
+
     fun transfer(source: ImmutableTypedProperties, vararg keys: Marker)
 
     fun transfer(source: ImmutableTypedProperties, keys: Collection<Marker>)
 
+    // Remove properties
     fun <T> remove(key: TypedMarker<T>): T?
 
     fun remove(key: Marker): Any?
 
+    // Clear all the properties
     fun clear()
 
     // Necessary to enable syntax: map[key] = value
