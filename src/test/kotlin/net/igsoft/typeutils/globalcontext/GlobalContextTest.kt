@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test
 data class Person(val firstName: String, val lastName: String, val age: Int)
 
 class GlobalContextTest {
-    private val person by DefaultTypedMarker.create<Person>()
-    private val otherPerson by DefaultTypedMarker.create<Person>()
+    private val person by DefaultTypedMarker.createWithPropertyNameId<Person>()
+    private val otherPerson by DefaultTypedMarker.createWithPropertyNameId<Person>()
 
     @Test
     fun `Assert that we can register and read objects in GlobalContext`() {

@@ -31,7 +31,7 @@ open class DefaultTypedProperties protected constructor (
         val value = get(key)
 
         if (isPropertyKeyMissing(value, key)) {
-            throw NoSuchElementException("Marker $key is missing in the properties")
+            throw NoSuchElementException("Marker '$key' is missing in the properties")
         }
 
         return value!!
@@ -41,7 +41,7 @@ open class DefaultTypedProperties protected constructor (
         val value = get(key)
 
         if (isPropertyKeyMissing(value, key)) {
-            throw NoSuchElementException("Marker $key is missing in the properties")
+            throw NoSuchElementException("Marker '$key' is missing in the properties")
         }
 
         return value as T

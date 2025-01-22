@@ -10,5 +10,6 @@ object Markers {
 
     fun markerHashCode(marker: Marker) = marker.id.hashCode()
 
-    fun markerToString(anyMarker: Marker, id: Any, clazz: Class<*>) = "${anyMarker::class.java.simpleName}(id=$id, clazz=${clazz.canonicalName})"
+    fun markerDefaultLabel(markerClazz: String?, id: Any, clazz: Class<*>): String =
+        "${markerClazz ?: "anonymous"}(id=$id, clazz=${clazz.canonicalName})"
 }

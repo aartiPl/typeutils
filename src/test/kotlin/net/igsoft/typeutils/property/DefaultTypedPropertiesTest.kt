@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test
 class DefaultTypedPropertiesTest {
     private lateinit var properties: MutableTypedProperties
 
-    private val name by DefaultTypedMarker.create<String>()
-    private val surname by DefaultTypedMarker.create<String>()
-    private val age by DefaultTypedMarker.create<Int>()
-    private val shoeSize by DefaultTypedMarker.create<Int>()
+    private val name by DefaultTypedMarker.createWithPropertyNameId<String>()
+    private val surname by DefaultTypedMarker.createWithPropertyNameId<String>()
+    private val age by DefaultTypedMarker.createWithPropertyNameId<Int>()
+    private val shoeSize by DefaultTypedMarker.createWithPropertyNameId<Int>()
 
     @BeforeEach
     fun setUp() {
@@ -70,7 +70,7 @@ class DefaultTypedPropertiesTest {
     fun `Assert that getting not null properties is possible`() {
         assertThat(properties.getValue(name)).isEqualTo(NAME)
         assertThat(properties.getValue(surname)).isEqualTo(SURNAME)
-        assertFailure { properties.getValue(shoeSize) }.hasMessage("Marker DefaultTypedMarker(id=shoeSize, clazz=java.lang.Integer) is missing in the properties")
+        assertFailure { properties.getValue(shoeSize) }.hasMessage("Marker 'shoeSize' is missing in the properties")
 
         val untypedFirstname: Marker = name
         val untypedSurname: Marker = surname
@@ -78,7 +78,7 @@ class DefaultTypedPropertiesTest {
 
         assertThat(properties.getValue(untypedFirstname)).isNotNull().isInstanceOf<String>().isEqualTo(NAME)
         assertThat(properties.getValue(untypedSurname)).isNotNull().isInstanceOf<String>().isEqualTo(SURNAME)
-        assertFailure { properties.getValue(untypedShoeSize) }.hasMessage("Marker DefaultTypedMarker(id=shoeSize, clazz=java.lang.Integer) is missing in the properties")
+        assertFailure { properties.getValue(untypedShoeSize) }.hasMessage("Marker 'shoeSize' is missing in the properties")
     }
 
     @Test
@@ -87,7 +87,14 @@ class DefaultTypedPropertiesTest {
 
         assertThat(properties).apply {
             prop(MutableTypedProperties::size).isEqualTo(4)
-            prop(MutableTypedProperties::keys).isEqualTo(setOf(this@DefaultTypedPropertiesTest.name, surname, age, shoeSize))
+            prop(MutableTypedProperties::keys).isEqualTo(
+                setOf(
+                    this@DefaultTypedPropertiesTest.name,
+                    surname,
+                    age,
+                    shoeSize
+                )
+            )
             prop(MutableTypedProperties::values).containsExactlyInAnyOrder(NAME, SURNAME, 28, 32)
         }
     }

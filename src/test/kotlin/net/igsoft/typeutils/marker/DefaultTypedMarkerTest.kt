@@ -10,33 +10,44 @@ import org.junit.jupiter.api.Test
 class DefaultTypedMarkerTest {
     @Test
     fun `Assert that TypedMarker can be created with property syntax`() {
-        val someProperty by DefaultTypedMarker.create<String>()
+        val someProperty by DefaultTypedMarker.createWithPropertyNameId<String>()
+
         assertThat(someProperty).apply {
             prop(DefaultTypedMarker<String>::clazz).isEqualTo(String::class.java)
             prop(DefaultTypedMarker<String>::id).isEqualTo("someProperty")
+            prop(DefaultTypedMarker<String>::label).isEqualTo("someProperty")
         }
     }
 
     @Test
     fun `Assert that TypedMarker can be created manually`() {
-        assertThat(DefaultTypedMarker("s1", String::class.java)).apply {
+        assertThat(DefaultTypedMarker.create("s1", String::class.java)).apply {
             prop(DefaultTypedMarker<String>::clazz).isEqualTo(String::class.java)
             prop(DefaultTypedMarker<String>::id).isEqualTo("s1")
+            prop(DefaultTypedMarker<String>::label).isEqualTo("DefaultTypedMarker(id=s1, clazz=java.lang.String)")
         }
 
         assertThat(DefaultTypedMarker.create<Int>("s2")).apply {
             prop(DefaultTypedMarker<Int>::clazz).isEqualTo(Integer::class.java)
             prop(DefaultTypedMarker<Int>::id).isEqualTo("s2")
+            prop(DefaultTypedMarker<Int>::label).isEqualTo("DefaultTypedMarker(id=s2, clazz=java.lang.Integer)")
+        }
+
+        assertThat(DefaultTypedMarker.create<Int>("s2", "my sophisticated label")).apply {
+            prop(DefaultTypedMarker<Int>::clazz).isEqualTo(Integer::class.java)
+            prop(DefaultTypedMarker<Int>::id).isEqualTo("s2")
+            prop(DefaultTypedMarker<Int>::label).isEqualTo("my sophisticated label")
         }
     }
 
     @Test
-    fun `Assert that TypedMarker get other other TypedMarker and both will point to the same value`() {
+    fun `Assert that TypedMarker constructor can receive another TypedMarker and both will point to the same value`() {
         val typedMarker = DefaultTypedMarker.create<String>(5)
 
         assertThat(DefaultTypedMarker(typedMarker)).apply {
             prop(DefaultTypedMarker<String>::clazz).isEqualTo(String::class.java)
             prop(DefaultTypedMarker<String>::id).isEqualTo(5)
+            prop(DefaultTypedMarker<String>::label).isEqualTo("DefaultTypedMarker(id=5, clazz=java.lang.String)")
         }
     }
 
