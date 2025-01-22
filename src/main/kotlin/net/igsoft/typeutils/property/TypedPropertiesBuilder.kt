@@ -3,12 +3,12 @@ package net.igsoft.typeutils.property
 import net.igsoft.typeutils.marker.TypedMarker
 
 @Suppress("unused")
-class ImmutableTypedPropertiesBuilder {
-    private val properties = TypedProperties(mutableMapOf())
+class TypedPropertiesBuilder {
+    private val properties = DefaultTypedProperties()
 
     fun <T> putProperty(key: TypedMarker<T>, value: T) = apply {
         properties[key] = value
     }
 
-    fun build(): ImmutableTypedProperties = properties
+    fun build(): TypedProperties = properties
 }

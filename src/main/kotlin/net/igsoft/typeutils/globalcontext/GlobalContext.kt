@@ -1,12 +1,12 @@
 package net.igsoft.typeutils.globalcontext
 
 import net.igsoft.typeutils.marker.TypedMarker
-import net.igsoft.typeutils.property.ImmutableTypedProperties
+import net.igsoft.typeutils.property.ConcurrentTypedProperties
+import net.igsoft.typeutils.property.MutableTypedProperties
 import net.igsoft.typeutils.property.TypedProperties
-import java.util.concurrent.ConcurrentHashMap
 
-open class GlobalContextImplementation(private val context: TypedProperties = TypedProperties(ConcurrentHashMap())) :
-    ImmutableTypedProperties by context {
+open class GlobalContextImplementation(private val context: MutableTypedProperties = ConcurrentTypedProperties()) :
+    TypedProperties by context {
 
     fun <T> register(key: TypedMarker<T>, value: T) {
         require(!context.containsKey(key)) {

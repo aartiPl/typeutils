@@ -8,7 +8,7 @@ import net.igsoft.typeutils.marker.Marker
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class TypedPropertiesTest {
+class DefaultTypedPropertiesTest {
     private lateinit var properties: MutableTypedProperties
 
     private val name by DefaultTypedMarker.create<String>()
@@ -18,7 +18,7 @@ class TypedPropertiesTest {
 
     @BeforeEach
     fun setUp() {
-        properties = TypedProperties()
+        properties = DefaultTypedProperties()
 
         properties[name] = NAME
         properties[surname] = SURNAME
@@ -27,7 +27,7 @@ class TypedPropertiesTest {
 
     @Test
     fun `Create properties with configuration block`() {
-        val properties = TypedProperties {
+        val properties = DefaultTypedProperties {
             put(name, NAME)
             put(surname, SURNAME)
             put(shoeSize, 25)
@@ -40,14 +40,14 @@ class TypedPropertiesTest {
 
     @Test
     fun `Assert that creation is possible`() {
-        val properties = TypedProperties(mutableMapOf())
+        val properties = DefaultTypedProperties()
 
         assertThat(properties).isNotNull()
         assertThat(properties).apply {
-            prop(TypedProperties::size).isEqualTo(0)
-            prop(TypedProperties::keys).isEmpty()
-            prop(TypedProperties::values).isEmpty()
-            prop(TypedProperties::entries).isEmpty()
+            prop(DefaultTypedProperties::size).isEqualTo(0)
+            prop(DefaultTypedProperties::keys).isEmpty()
+            prop(DefaultTypedProperties::values).isEmpty()
+            prop(DefaultTypedProperties::entries).isEmpty()
         }
     }
 
@@ -87,7 +87,7 @@ class TypedPropertiesTest {
 
         assertThat(properties).apply {
             prop(MutableTypedProperties::size).isEqualTo(4)
-            prop(MutableTypedProperties::keys).isEqualTo(setOf(this@TypedPropertiesTest.name, surname, age, shoeSize))
+            prop(MutableTypedProperties::keys).isEqualTo(setOf(this@DefaultTypedPropertiesTest.name, surname, age, shoeSize))
             prop(MutableTypedProperties::values).containsExactlyInAnyOrder(NAME, SURNAME, 28, 32)
         }
     }
@@ -98,7 +98,7 @@ class TypedPropertiesTest {
 
         assertThat(properties).apply {
             prop(MutableTypedProperties::size).isEqualTo(2)
-            prop(MutableTypedProperties::keys).isEqualTo(setOf(this@TypedPropertiesTest.name, surname))
+            prop(MutableTypedProperties::keys).isEqualTo(setOf(this@DefaultTypedPropertiesTest.name, surname))
             prop(MutableTypedProperties::values).containsExactlyInAnyOrder(NAME, SURNAME)
         }
     }
@@ -119,26 +119,26 @@ class TypedPropertiesTest {
 
     @Test
     fun `TypedProperties can be compared`() {
-        val properties1 = TypedProperties {
+        val properties1 = DefaultTypedProperties {
             put(name, NAME)
             put(surname, SURNAME)
             put(shoeSize, 25)
         }
 
-        val properties2 = TypedProperties {
+        val properties2 = DefaultTypedProperties {
             put(name, NAME)
             put(surname, SURNAME)
             put(shoeSize, 25)
         }
 
         assertThat(properties1).isEqualTo(properties2)
-        assertThat(properties1 as ImmutableTypedProperties).isEqualTo(properties2 as MutableTypedProperties)
+        assertThat(properties1 as TypedProperties).isEqualTo(properties2 as MutableTypedProperties)
     }
 
     @Test
     fun `Assert that all properties can be merged`() {
         // Given
-        val newProperties = TypedProperties()
+        val newProperties = DefaultTypedProperties()
 
         // When
         newProperties.merge(properties)
@@ -153,7 +153,7 @@ class TypedPropertiesTest {
     @Test
     fun `Assert that some properties can be merged`() {
         // Given
-        val newProperties = TypedProperties()
+        val newProperties = DefaultTypedProperties()
 
         // When
         newProperties.merge(properties, name, age)

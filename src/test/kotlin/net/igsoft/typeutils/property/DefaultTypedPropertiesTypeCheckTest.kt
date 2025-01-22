@@ -3,13 +3,13 @@ package net.igsoft.typeutils.property
 import net.igsoft.typeutils.marker.DefaultTypedMarker
 import org.junit.jupiter.api.Test
 
-class TypedPropertiesTypeCheckTest {
+class DefaultTypedPropertiesTypeCheckTest {
     private val name by DefaultTypedMarker.create<String>()
 
     @Test
     fun `Assert that type checking is working`() {
         //TODO: there is a need for runtime compilation to create correct type checking tests
-        val properties = TypedProperties()
+        val properties = DefaultTypedProperties()
         properties[name] = "55"
     }
 }
