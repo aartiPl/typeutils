@@ -6,11 +6,11 @@ import net.igsoft.typeutils.marker.DefaultTypedMarker
 import org.junit.jupiter.api.Test
 
 class PipelineTest {
-    private val firstname by DefaultTypedMarker.createWithPropertyNameId<String>()
-    private val lastname by DefaultTypedMarker.createWithPropertyNameId<String>()
-    private val age by DefaultTypedMarker.createWithPropertyNameId<Int>()
-    private val shoeSize by DefaultTypedMarker.createWithPropertyNameId<Int?>()
-    private val helloMessage by DefaultTypedMarker.createWithPropertyNameId<String>()
+    private val firstname = DefaultTypedMarker.create<String>("firstname")
+    private val lastname = DefaultTypedMarker.create<String>("lastname")
+    private val age = DefaultTypedMarker.create<Int>("age")
+    private val shoeSize = DefaultTypedMarker.create<Int?>("shoeSize")
+    private val helloMessage = DefaultTypedMarker.create<String>("helloMessage")
 
     private val p1: Processor = object: Processor {
         override fun process(context: Context) {

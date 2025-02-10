@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 class DefaultTypedMarkerTest {
     @Test
     fun `Assert that TypedMarker can be created with property syntax`() {
-        val someProperty by DefaultTypedMarker.createWithPropertyNameId<String>()
+        val someProperty = DefaultTypedMarker.create<String>("someProperty", "someProperty")
 
         assertThat(someProperty).apply {
             prop(DefaultTypedMarker<String>::clazz).isEqualTo(String::class.java)

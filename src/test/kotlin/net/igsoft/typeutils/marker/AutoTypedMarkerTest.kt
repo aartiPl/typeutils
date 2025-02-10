@@ -14,7 +14,7 @@ class AutoTypedMarkerTest {
 
     @Test
     fun `Assert that label is correctly created`() {
-        val marker: TypedMarker<String> by AutoTypedMarker.createWithLabel()
+        val marker: TypedMarker<String> = AutoTypedMarker.create("marker")
 
         assertThat(marker.label).isEqualTo("marker")
     }

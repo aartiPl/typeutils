@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test
 class DefaultTypedPropertiesTest {
     private lateinit var properties: MutableTypedProperties
 
-    private val name by DefaultTypedMarker.createWithPropertyNameId<String>()
-    private val surname by DefaultTypedMarker.createWithPropertyNameId<String>()
-    private val age by DefaultTypedMarker.createWithPropertyNameId<Int>()
-    private val shoeSize by DefaultTypedMarker.createWithPropertyNameId<Int>()
+    private val name = DefaultTypedMarker.create<String>("name")
+    private val surname = DefaultTypedMarker.create<String>("surname")
+    private val age = DefaultTypedMarker.create<Int>("age")
+    private val shoeSize = DefaultTypedMarker.create<Int>("shoeSize", "shoeSize")
 
     @BeforeEach
     fun setUp() {

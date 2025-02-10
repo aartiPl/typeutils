@@ -1,7 +1,5 @@
 package net.igsoft.typeutils.marker
 
-import kotlin.properties.ReadOnlyProperty
-
 @Suppress("unused")
 open class DefaultTypedMarker<T> protected constructor(
     override val id: Any,
@@ -22,11 +20,5 @@ open class DefaultTypedMarker<T> protected constructor(
 
         inline fun <reified T> create(id: Any, label: String? = null) =
             create(id, T::class.java, label)
-
-        inline fun <reified T> createWithPropertyNameId(label: String? = null): ReadOnlyProperty<Any?, DefaultTypedMarker<T>> {
-            return ReadOnlyProperty { _, property ->
-                create(property.name, T::class.java, label ?: property.name)
-            }
-        }
     }
 }
