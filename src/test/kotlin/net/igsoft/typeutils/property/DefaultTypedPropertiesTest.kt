@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test
 class DefaultTypedPropertiesTest {
     private lateinit var properties: MutableTypedProperties
 
-    private val name = DefaultTypedMarker.create<String>("name")
-    private val surname = DefaultTypedMarker.create<String>("surname")
-    private val age = DefaultTypedMarker.create<Int>("age")
+    private val name = DefaultTypedMarker.create<String>("name", "name")
+    private val surname = DefaultTypedMarker.create<String>("surname", "surname")
+    private val age = DefaultTypedMarker.create<Int>("age", "age")
     private val shoeSize = DefaultTypedMarker.create<Int>("shoeSize", "shoeSize")
 
     @BeforeEach
@@ -171,6 +171,28 @@ class DefaultTypedPropertiesTest {
         assertThat(newProperties[age]).isEqualTo(AGE)
         assertThat(newProperties[surname]).isEqualTo(null)
         assertThat(newProperties[shoeSize]).isEqualTo(null)
+    }
+
+    @Test
+    fun `Assert that toString works correctly`() {
+        // Given
+        val newProperties = DefaultTypedProperties {
+            put(name, NAME)
+            put(surname, SURNAME)
+            put(age, AGE)
+        }
+
+        // When
+        val string = newProperties.toString()
+
+        // Then
+        assertThat(string).isEqualTo(
+            """ |DefaultTypedProperties [size=3]
+                |  * name -> Gregory
+                |  * surname -> Iksiński
+                |  * age -> 28
+                |""".trimMargin()
+        )
     }
 
     companion object {

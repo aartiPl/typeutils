@@ -129,5 +129,14 @@ open class DefaultTypedProperties protected constructor (
         return map.hashCode()
     }
 
+    override fun toString(): String {
+        return buildString {
+            appendLine("DefaultTypedProperties [size=${map.size}]")
+            map.entries.forEach {
+                appendLine("  * ${it.key} -> ${it.value}")
+            }
+        }
+    }
+
     private fun isPropertyKeyMissing(any: Any?, marker: Marker) = any == null && !map.containsKey(marker)
 }
