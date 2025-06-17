@@ -1,8 +1,8 @@
-val kotlinVersion: String = "1.9.25"
+val kotlinVersion: String = "2.1.21"
 
 plugins {
-    kotlin("jvm") version "1.9.25"
-    id("com.adarshr.test-logger") version "3.2.0"
+    kotlin("jvm") version "2.1.21"
+    id("com.adarshr.test-logger") version "4.0.0"
     `maven-publish`
     signing
     idea
@@ -91,13 +91,13 @@ signing {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
-    val junitVersion = "5.11.3"
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    val junitVersion = "5.13.1"
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testImplementation("com.willowtreeapps.assertk:assertk:0.28.1")
-    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.17.3")
-    testImplementation("io.mockk:mockk:1.13.13")
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:4.0.2")
+    testImplementation("io.mockk:mockk:1.14.2")
 }
