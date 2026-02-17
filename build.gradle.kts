@@ -7,8 +7,30 @@ plugins {
     idea
 }
 
+fun calculateVersion(baseVersion: String): String {
+    return try {
+        val branch = ProcessBuilder("git", "rev-parse", "--abbrev-ref", "HEAD")
+            .redirectErrorStream(true)
+            .start()
+            .inputStream
+            .bufferedReader()
+            .readText()
+            .trim()
+
+        if (branch == "master" || branch == "main") {
+            baseVersion
+        } else {
+            "$baseVersion-SNAPSHOT"
+        }
+    } catch (_: Exception) {
+        baseVersion
+    }
+}
+
 group = "net.igsoft"
-version = "0.7.0-SNAPSHOT"
+version = calculateVersion("0.7.0")
+
+println("Version: $version")
 
 repositories {
     mavenCentral()
