@@ -1,10 +1,9 @@
-val kotlinVersion: String = "2.1.21"
+val kotlinVersion: String = "2.3.10"
 
 plugins {
-    kotlin("jvm") version "2.1.21"
+    kotlin("jvm") version "2.3.10"
     id("com.adarshr.test-logger") version "4.0.0"
-    `maven-publish`
-    signing
+    id("com.vanniktech.maven.publish") version "0.36.0"
     idea
 }
 
@@ -19,9 +18,6 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
-
-    withJavadocJar()
-    withSourcesJar()
 }
 
 testlogger {
@@ -54,40 +50,25 @@ val scmSpec = Action<MavenPomScm> {
     url.set("https://github.com/aartiPl/typeutils/tree/master")
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("typeutils") {
-            artifactId = "typeutils"
-            from(components["java"])
+mavenPublishing {
+    // You can keep group/version from project; artifactId is set here.
+    coordinates(group.toString(), project.name, version.toString())
 
-            pom {
-                name.set("typeutils")
-                description.set("TypeUtils - library for type safe utilities")
-                url.set("https://github.com/aartiPl/typeutils")
+    // Central Portal (new Sonatype flow) + automatic release for non-SNAPSHOT
+    publishToMavenCentral()
 
-                licenses(licencesSpec)
-                developers(developersSpec)
-                scm(scmSpec)
-            }
-        }
+    // Uses Gradle Signing under the hood.
+    signAllPublications()
+
+    pom {
+        name.set(project.name)
+        description.set("TypeUtils - library for type safe utilities")
+        url.set("https://github.com/aartiPl/typeutils")
+
+        licenses(licencesSpec)
+        developers(developersSpec)
+        scm(scmSpec)
     }
-
-    repositories {
-        maven {
-            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            url = uri(if (project.version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-
-            credentials {
-                username = project.findProperty("sonatype.user") as String? ?: System.getenv("SONATYPE_USER")
-                password = project.findProperty("sonatype.password") as String? ?: System.getenv("SONATYPE_PASSWORD")
-            }
-        }
-    }
-}
-
-signing {
-    sign(publishing.publications["typeutils"])
 }
 
 dependencies {
