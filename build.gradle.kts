@@ -1,9 +1,11 @@
-val kotlinVersion: String = "2.3.10"
+import org.gradle.api.tasks.testing.Test
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm") version "2.3.10"
+    kotlin("multiplatform") version "2.4.0"
+    id("com.android.kotlin.multiplatform.library") version "9.1.1"
     id("com.adarshr.test-logger") version "4.0.0"
-    id("com.vanniktech.maven.publish") version "0.36.0"
+    id("com.vanniktech.maven.publish") version "0.37.0"
     idea
 }
 
@@ -28,17 +30,47 @@ fun calculateVersion(baseVersion: String): String {
 }
 
 group = "net.igsoft"
-version = calculateVersion("0.7.0")
+version = calculateVersion("0.8.0")
 
 println("Version: $version")
 
 repositories {
     mavenCentral()
+    google()
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+kotlin {
+    jvm()
+    android {
+        namespace = "net.igsoft.typeutils"
+        compileSdk = 37
+        minSdk = 23
+        withHostTestBuilder {
+            sourceSetTreeName = "test"
+        }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+    iosArm64()
+    iosSimulatorArm64()
+    jvmToolchain(17)
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation("org.jetbrains.kotlinx:atomicfu:0.33.0")
+        }
+
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation("com.willowtreeapps.assertk:assertk:0.28.1")
+        }
+
+        jvmTest.dependencies {
+            implementation(kotlin("test-junit5"))
+            implementation("nl.jqno.equalsverifier:equalsverifier:4.5")
+            runtimeOnly("org.junit.platform:junit-platform-launcher")
+        }
     }
 }
 
@@ -47,7 +79,7 @@ testlogger {
     showFullStackTraces = false
 }
 
-tasks.test {
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
 
@@ -67,19 +99,14 @@ val developersSpec = Action<MavenPomDeveloperSpec> {
 }
 
 val scmSpec = Action<MavenPomScm> {
-    connection.set("scm:git:git://https://github.com/aartiPl/typeutils.git")
+    connection.set("scm:git:git://github.com/aartiPl/typeutils.git")
     developerConnection.set("scm:git:ssh:https://github.com/aartiPl/typeutils.git")
     url.set("https://github.com/aartiPl/typeutils/tree/master")
 }
 
 mavenPublishing {
-    // You can keep group/version from project; artifactId is set here.
     coordinates(group.toString(), project.name, version.toString())
-
-    // Central Portal (new Sonatype flow) + automatic release for non-SNAPSHOT
     publishToMavenCentral()
-
-    // Uses Gradle Signing under the hood.
     signAllPublications()
 
     pom {
@@ -91,16 +118,4 @@ mavenPublishing {
         developers(developersSpec)
         scm(scmSpec)
     }
-}
-
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-
-    val junitVersion = "5.13.1"
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-    testImplementation("com.willowtreeapps.assertk:assertk:0.28.1")
-    testImplementation("nl.jqno.equalsverifier:equalsverifier:4.0.2")
-    testImplementation("io.mockk:mockk:1.14.2")
 }
